@@ -43,7 +43,7 @@ def get_ak(abbreviation=None, plain_text=None):
             "usageCount": 0,
             "omitTrigger": True,
             "prompt": False,
-            "description": "missing description",
+            "description": getShortText(plain_text),
             "abbreviation": {
                 "wordChars": "[^" + ak_default_trigger_char + "]",
                 "abbreviations": [
@@ -84,8 +84,11 @@ def transform(direction, source):
     else:
         raise Exception('Unsupported direction')
 
-def genFileName(snippit):
-    pass
+def getShortText(longtext):
+    if len(longtext)<=20:
+        return longtext
+    else:
+        return longtext[0:19]
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Expander Sync')
@@ -117,14 +120,6 @@ if __name__ == '__main__':
 
     if args.direction == 'toAK':
         for snippit in converted_snippets:
-            print ('0')
-            print (snippit[0])
-            print ('1')
-            print (snippit[1])
-            print ('2')
-            print (snippit[2])
-            print ('target')
-            print (target)
             with io.open(target + '/.' + snippit[1] + '.json', 'w', encoding='utf-8') as f:
                 f.write(json.dumps(snippit[0], indent=4, ensure_ascii=False))
             with io.open(target + '/' + snippit[1] + '.txt', 'w', encoding='utf-8') as f:
